@@ -46,39 +46,17 @@ function convertYear(romanNumeral) {
         M: 1000,
     };
 
-    let capitalize = romanNumeral;
-    romanNumeral = capitalize.toUpperCase();
+    const regex = /^M{0,}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/;
+
+    // let capitalize = romanNumeral;
+    // romanNumeral = capitalize.toUpperCase();
     let result = 0;
 
     for (let i = 0; i < romanNumeral.length; i++) {
         const currentNumeral = romanNumerals[romanNumeral[i]];
         const nextNumeral = romanNumerals[romanNumeral[i + 1]];
-        const nextNextNumeral = romanNumerals[romanNumeral[i + 2]];
-        const nextNextNextNumeral = romanNumerals[romanNumeral[i + 3]];
 
-        if (currentNumeral === undefined) {
-            return "invalid roman numeral";
-        } else if (nextNumeral > currentNumeral * 10) {
-            return "invalid roman numeral";
-        } else if (
-            (currentNumeral === 5 ||
-                currentNumeral === 50 ||
-                currentNumeral === 500) &&
-            currentNumeral === nextNumeral
-        ) {
-            return "invalid roman numeral";
-        } else if (
-            nextNextNextNumeral >= currentNumeral &&
-            currentNumeral === nextNextNumeral
-        ) {
-            return "invalid roman numeral";
-        } else if (nextNumeral - currentNumeral === currentNumeral) {
-            return "invalid roman numeral";
-        } else if (
-            nextNumeral - currentNumeral + nextNextNumeral >= nextNumeral &&
-            currentNumeral != nextNumeral &&
-            currentNumeral < nextNumeral
-        ) {
+        if (!regex.test(romanNumeral)) {
             return "invalid roman numeral";
         } else if (nextNumeral && currentNumeral < nextNumeral) {
             result -= currentNumeral;
